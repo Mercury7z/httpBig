@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Login form</title>
+    <link href="css/freemarker.css" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="table flex flex-col">
+                <div class="header flex">
+                    <div class="column">
+                        ##
+                    </div>
+                    <div class="column">
+                        Имя
+                    </div>
+                    <div class="column">
+                        Фамилия
+                    </div>
+                    <div class="column">
+                        В работе
+                    </div>
+                </div>
+                <#list books as book>
+                <div class="row ${book} flex">
+                    <div class="column">
+                        ${book?counter}
+                    </div>
+                    <div class="column">
+                        <a href="/bookInfo">
+                            ${book.name!"-- не указано --"}
+                        </a>
+                    </div>
+                    <div class="column">
+                        ${book.author!"-- не указано --"}
+                    </div>
+                    <div class="column">
+                        ${book.inWork?c}
+                    </div>
+                </div>
+            </#list>
+        </div>
+
+        </div>
+    </main>
+</body>
+
+</html>
