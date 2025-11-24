@@ -10,6 +10,7 @@ import server.ContentType;
 import server.ResponseCodes;
 
 
+
 import java.io.*;
 
 public class Lesson44Server extends BasicServer {
@@ -20,6 +21,7 @@ public class Lesson44Server extends BasicServer {
         registerGet("/books", this::booksHandler);
         registerGet("/sample", this::freemarkerSampleHandler);
         registerGet("/bookInfo", this::bookInfoHandler);
+
 
 
     }
@@ -89,6 +91,7 @@ public class Lesson44Server extends BasicServer {
     private SampleDataModel getSampleDataModel() {
         // возвращаем экземпляр тестовой модели-данных
         // которую freemarker будет использовать для наполнения шаблона
+//        JsonCreateReadWrite.read("data")
         return new SampleDataModel();
     }
 }
