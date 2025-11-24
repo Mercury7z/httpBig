@@ -17,9 +17,9 @@ public class Lesson44Server extends BasicServer {
 
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
-        registerGet("/books", this::freemarkerSampleHandler);
+        registerGet("/books", this::booksHandler);
         registerGet("/sample", this::freemarkerSampleHandler);
-        registerGet("/bookInfo.ftlh", this::freemarkerSampleHandler);
+        registerGet("/bookInfo", this::bookInfoHandler);
 
 
     }
@@ -43,10 +43,16 @@ public class Lesson44Server extends BasicServer {
         }
     }
 
-    private void freemarkerSampleHandler(HttpExchange exchange) {
+    private void bookInfoHandler(HttpExchange exchange) {
+        renderTemplate(exchange, "bookInfo.html", getSampleDataModel());
+    }
+
+    private void booksHandler(HttpExchange exchange) {
         renderTemplate(exchange, "books.html", getSampleDataModel());
+    }
+
+    private void freemarkerSampleHandler(HttpExchange exchange) {
         renderTemplate(exchange, "sample.html", getSampleDataModel());
-        renderTemplate(exchange, "bookInfo.ftlh", getSampleDataModel());
     }
 
     protected void renderTemplate(HttpExchange exchange, String templateFile, Object dataModel) {

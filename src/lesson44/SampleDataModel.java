@@ -1,7 +1,5 @@
 package lesson44;
 
-
-
 import model.Book;
 
 import java.time.LocalDateTime;
@@ -9,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SampleDataModel {
-    private Book book = new Book("Apache", "FreeMarker");;
+    private Book book = new Book("Apache", "FreeMarker");
     private List<Book> books = new ArrayList<>();
     private User user = new User("Apache", "FreeMarker");
     private LocalDateTime currentDateTime = LocalDateTime.now();
