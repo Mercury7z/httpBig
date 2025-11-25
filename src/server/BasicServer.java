@@ -13,7 +13,6 @@ import java.util.Map;
 public abstract class BasicServer {
 
     private final HttpServer server;
-    // путь к каталогу с файлами, которые будет отдавать сервер по запросам клиентов
     private final String dataDir = "data";
     private Map<String, RouteHandler> routes = new HashMap<>();
 
