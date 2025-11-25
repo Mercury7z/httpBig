@@ -1,0 +1,28 @@
+{
+  "book": {
+    "name": "LOTR1",
+    "author": "Tolkin",
+    "key": ""
+  },
+  "books": [
+    {
+      "name": "LOTR1",
+      "author": "Tolkin",
+      "key": ""
+    },
+    {
+      "name": "LOTR2",
+      "author": "Tolkin",
+      "key": "login/password"
+    },
+    {
+      "name": "LOTR3",
+      "author": "Tolkin",
+      "key": "login/password"
+    }
+  ],
+  "client": {
+    "name": "login",
+    "password": "password"
+  }
+}

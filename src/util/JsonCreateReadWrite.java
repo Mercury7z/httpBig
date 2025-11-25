@@ -2,7 +2,7 @@ package util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lesson44.SampleDataModel;
+import ServerLogic.DataModel;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,15 +17,15 @@ public final class JsonCreateReadWrite {
                 .create();
     }
 
-    public static SampleDataModel read(String fileName) {
-        var filePath = Path.of("src/data/", fileName);
-        SampleDataModel data = new SampleDataModel();
+    public static DataModel read(String fileName) {
+        var filePath = Path.of("data/dataBase/", fileName);
+        DataModel data = new DataModel();
         try {
-            data = getGson().fromJson(Files.readString(filePath), SampleDataModel.class);
+            data = getGson().fromJson(Files.readString(filePath), DataModel.class);
             String content = Files.readString(filePath);
             if (content.trim().isEmpty()) {
                 System.out.println("ASD");
-                return new SampleDataModel();
+                return new DataModel();
             }
         } catch (IOException e) {
             System.out.println("Выбранного файла не существует, он пустой или содержит данные в неверном формате.");
@@ -34,8 +34,8 @@ public final class JsonCreateReadWrite {
         return data;
     }
 
-    public static void write(String fileName, SampleDataModel data) {
-        var filePath = Path.of("data/", fileName);
+    public static void write(String fileName, DataModel data) {
+        var filePath = Path.of("data/dataBase/", fileName);
         var json = getGson().toJson(data);
         try {
             Files.writeString(filePath, json);
@@ -44,5 +44,4 @@ public final class JsonCreateReadWrite {
             e.printStackTrace();
         }
     }
-
 }

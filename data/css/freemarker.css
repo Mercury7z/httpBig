@@ -3,6 +3,13 @@ body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+h1 {
+ text-align: center;
+ white-space: nowrap;
+}
+
+
+
 p {
   padding-left: 15px;
 }
@@ -22,6 +29,7 @@ div p:last-child {
 
 .flex-col {
   flex-direction: column;
+
 }
 
 .column {
@@ -41,7 +49,18 @@ div p:last-child {
     background-color: #ddd;
     padding: 5px 0;
     border-bottom: 1px solid black;
+    margin-top: 20px;
+
 }
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.bookInfo {
+     border: 2px solid black;
+}
+
 
 li.row {
 }

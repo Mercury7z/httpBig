@@ -3,13 +3,18 @@ package model;
 public  class Book {
     private String name;
     private String author;
-    private boolean inWork;
+    private String key;
 
-    public Book(String name,String author){
+    private Book(String name,String author,String key){
         this.name = name;
         this.author = author;
-        this.inWork = false;
+        this.key = key;
     }
+
+    public static Book getBook(String name,String author,String key) {
+        return new Book(name,author,key);
+    }
+
 
     public String getName() {
         return name;
@@ -19,7 +24,11 @@ public  class Book {
         return author;
     }
 
-    public boolean isInWork() {
-        return inWork;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

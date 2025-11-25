@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Client</title>
+    <link href="css/freemarker.css" rel="stylesheet">
+</head>
+
+<body>
+<main>
+
+    <div class="container">
+        <div class="container">
+            <h1>Информация о сотруднике</h1>
+            <div class="table flex flex-col">
+                <div class="header flex">
+                    <div class="column">
+                        Имя
+                    </div>
+                    <div class="column">
+                        Книги у сотрудника
+                    </div>
+
+                </div>
+                <#assign match = books?filter(b -> b.key == ((client.name)) + "/" + ((client.password))) >
+                <#if match?has_content>
+                <#list match as book>
+                <div class="row flex success">
+                    <div class="column">
+                        <span class="">Логин: ${book.key?split("/")[0]}</span>
+                    </div>
+                    <div class="column">
+                        <span class="no-wrap">Доступная книга: ${book.name}</span>
+                    </div>
+                </div>
+            </#list>
+            <#else>
+            Неверный логин или пароль
+        </#if>
+        </div>
+
+    </div>
+    </div>
+
+</main>
+</body>
+
+</html>
