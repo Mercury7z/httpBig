@@ -24,5 +24,6 @@
   "client": {
     "name": "login",
     "password": "password"
-  }
+  },
+  "clients": {}
 }

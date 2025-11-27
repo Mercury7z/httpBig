@@ -3,15 +3,25 @@ import model.Book;
 import model.Client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DataModel {
     private Book book;
     private List<Book> books = new ArrayList<>();
     private Client client;
+    private HashMap<String,Client> clients = new HashMap<>();
 
     public DataModel() {
 
+    }
+
+    public HashMap<String, Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(HashMap<String, Client> clients) {
+        this.clients = clients;
     }
 
     public Client getClient() {

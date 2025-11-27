@@ -3,12 +3,18 @@ package server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class BasicServer {
 
@@ -114,6 +120,37 @@ public abstract class BasicServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void redirect303(HttpExchange exchange,String path) {
+        try {
+            exchange.getResponseHeaders().add("Location", path);
+            exchange.sendResponseHeaders(ResponseCodes.SEE_OTHER.getCode(), 0);
+            exchange.getResponseBody().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    protected static String getContentType(HttpExchange exchange) {
+       return exchange.getResponseHeaders()
+                .getOrDefault("Content-Type", List.of(""))
+                .getFirst();
+
+    }
+
+    protected static String getRequestBody(HttpExchange exchange) {
+        InputStream is = exchange.getRequestBody();
+        InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
+        try (BufferedReader br = new BufferedReader(isr)){
+           return br.lines().collect(Collectors.joining(""));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private void handleIncomingServerRequests(HttpExchange exchange) {

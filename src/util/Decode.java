@@ -1,0 +1,44 @@
+package util;
+
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class Decode {
+    private Decode() {
+
+    }
+
+    public static Map<String,String> parseUrlEncoded(String raw, String delimiter) {
+        String[] parts = raw.split(delimiter);
+        Stream<Map.Entry<String,String>> stream = Arrays.stream(parts)
+                .map(Decode::decpde)
+                .filter(Optional::isPresent)
+                .map(Optional::get);
+        return stream.collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue
+        ));
+    }
+
+    private static Optional<Map.Entry<String,String>> decpde(String kv) {
+        if(!kv.contains("=")){
+            return Optional.empty();
+        }
+
+        String[] parts = kv.split("=");
+        if(parts.length != 2) {
+            return Optional.empty();
+        }
+
+        Charset utf8 = StandardCharsets.UTF_8;
+        String key = URLDecoder.decode(parts[0],utf8);
+        String value = URLDecoder.decode(parts[1],utf8);
+        return Optional.of(Map.entry(key,value));
+    }
+}
