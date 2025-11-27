@@ -1,6 +1,7 @@
 package ServerLogic;
 import model.Book;
 import model.Client;
+import util.JsonCreateReadWrite;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,10 @@ public class DataModel {
 
     public HashMap<String, Client> getClients() {
         return clients;
+    }
+
+    public void write() {
+        JsonCreateReadWrite.write("data.json",this);
     }
 
     public void setClients(HashMap<String, Client> clients) {

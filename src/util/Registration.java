@@ -8,6 +8,7 @@ public class Registration {
     public static boolean registration(DataModel DataModel,String login,String pass) {
         if (!isAlreadyRegistered(DataModel,login,pass)) {
            DataModel.getClients().put(login + pass,Client.getClient(login,pass));
+
            return true;
         }
         else {

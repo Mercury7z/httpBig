@@ -25,5 +25,26 @@
     "name": "login",
     "password": "password"
   },
-  "clients": {}
+  "clients": {
+    "asd@asdasd": {
+      "name": "asd@asd",
+      "password": "asd"
+    },
+    "123@123123": {
+      "name": "123@123",
+      "password": "123"
+    },
+    "123@12312": {
+      "name": "123@123",
+      "password": "12"
+    },
+    "asd@asdфыв": {
+      "name": "asd@asd",
+      "password": "фыв"
+    },
+    "123@123123123312": {
+      "name": "123@123",
+      "password": "123123312"
+    }
+  }
 }

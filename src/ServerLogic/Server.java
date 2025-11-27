@@ -38,15 +38,25 @@ public class Server extends BasicServer {
     }
 
     private void postRegisterHandler(HttpExchange exchange) {
-        String cType = getContentType(exchange);
+        DataModel dataModel = getDataModel();
         String raw = Server.getRequestBody(exchange);
-
+        String succses  = "<h1> succses </h1>";
+        String error  = "<h1> Ошибка повторите еще раз </h1>";
         Map<String,String> parsed = Decode.parseUrlEncoded(raw, "&");
-       if(Registration.registration(getDataModel(),parsed.get("email"),parsed.get("user-password"))) {
-//            redirect303(exchange,);
+       if(Registration.registration(dataModel,parsed.get("email"),parsed.get("user-password"))) {
+           try {
+               sendByteData(exchange,ResponseCodes.OK,ContentType.TEXT_HTML,getSucces().getBytes( ));
+               dataModel.write();
+           }catch (IOException e) {
+               e.printStackTrace();
+           }
        }
        else {
-
+           try {
+               sendByteData(exchange,ResponseCodes.OK,ContentType.TEXT_HTML,getNeSucces().getBytes( ));
+           }catch (IOException e) {
+               e.printStackTrace();
+           }
        }
     }
 
@@ -126,4 +136,87 @@ public class Server extends BasicServer {
          DataModel dataModel = JsonCreateReadWrite.read("data.json");
         return dataModel;
     }
+
+    private String getSucces() {
+        String succes = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Welcome</title>\n" +
+                "    <link rel=\"stylesheet\" href=\"css/forms.css\">\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "<main>\n" +
+                "    <form action=\"/register\" method=\"post\">\n" +
+                "        <fieldset>\n" +
+                "            <div class=\"legend\">\n" +
+                "                <p>Регистрация успешна!</p>\n" +
+                "\n" +
+                "            </div>\n" +
+                "            <div class=\"form-element\">\n" +
+                "                <label for=\"user-email\">email</label>\n" +
+                "                <input type=\"email\" name=\"email\" id=\"user-email\" placeholder=\"your email\" required autofocus>\n" +
+                "            </div>\n" +
+                "            <div class=\"form-element\">\n" +
+                "                <label for=\"user-password\">password</label>\n" +
+                "                <input type=\"password\" name=\"user-password\" id=\"user-password\" placeholder=\"your password\" required>\n" +
+                "            </div>\n" +
+                "            <div class=\"hr-line\">\n" +
+                "                <span class=\"details\">one more step to go</span>\n" +
+                "            </div>\n" +
+                "            <div class=\"form-element\">\n" +
+                "                <button class=\"register-button\" type=\"submit\">Register!</button>\n" +
+                "            </div>\n" +
+                "        </fieldset>\n" +
+                "    </form>\n" +
+                "</main>\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>";
+        return succes;
+    }
+
+    private String getNeSucces() {
+        String succes = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Welcome</title>\n" +
+                "    <link rel=\"stylesheet\" href=\"css/forms.css\">\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "<main>\n" +
+                "    <form action=\"/register\" method=\"post\">\n" +
+                "        <fieldset>\n" +
+                "            <div class=\"legend\">\n" +
+                "                <p>Регистрация не удалась</br>попробуйте снова</p>\n" +
+                "\n" +
+                "            </div>\n" +
+                "            <div class=\"form-element\">\n" +
+                "                <label for=\"user-email\">email</label>\n" +
+                "                <input type=\"email\" name=\"email\" id=\"user-email\" placeholder=\"your email\" required autofocus>\n" +
+                "            </div>\n" +
+                "            <div class=\"form-element\">\n" +
+                "                <label for=\"user-password\">password</label>\n" +
+                "                <input type=\"password\" name=\"user-password\" id=\"user-password\" placeholder=\"your password\" required>\n" +
+                "            </div>\n" +
+                "            <div class=\"hr-line\">\n" +
+                "                <span class=\"details\">one more step to go</span>\n" +
+                "            </div>\n" +
+                "            <div class=\"form-element\">\n" +
+                "                <button class=\"register-button\" type=\"submit\">Register!</button>\n" +
+                "            </div>\n" +
+                "        </fieldset>\n" +
+                "    </form>\n" +
+                "</main>\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>";
+        return succes;
+    }
+
 }
