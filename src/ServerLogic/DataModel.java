@@ -49,7 +49,7 @@ public class DataModel {
         this.books = books;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClient(String key) {
+        this.client = this.clients.get(key);
     }
 }

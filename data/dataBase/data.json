@@ -13,17 +13,17 @@
     {
       "name": "LOTR2",
       "author": "Tolkin",
-      "key": "login/password"
+      "key": "123@123/123"
     },
     {
       "name": "LOTR3",
       "author": "Tolkin",
-      "key": "login/password"
+      "key": "123@123/123"
     }
   ],
   "client": {
-    "name": "login",
-    "password": "password"
+    "name": "123@123",
+    "password": "123"
   },
   "clients": {
     "asd@asdasd": {
@@ -38,6 +38,10 @@
       "name": "123@123",
       "password": "12"
     },
+    "123@123asdsadsdaasddas": {
+      "name": "123@123",
+      "password": "asdsadsdaasddas"
+    },
     "asd@asdфыв": {
       "name": "asd@asd",
       "password": "фыв"
@@ -45,6 +49,10 @@
     "123@123123123312": {
       "name": "123@123",
       "password": "123123312"
+    },
+    "asdddd@asdasd": {
+      "name": "asdddd@asd",
+      "password": "asd"
     }
   }
 }

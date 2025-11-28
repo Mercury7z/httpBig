@@ -39,7 +39,13 @@
                 </div>
             </#list>
             <#else>
-            Неверный логин или пароль
+            <div class="row flex success">
+                <div class="column">
+                    <span class="">Логин: ${client.name}</span>
+                </div>
+                <div class="column">
+                </div>
+            </div>
         </#if>
         </div>
 
