@@ -76,3 +76,22 @@ fieldset label {
     color: white;
     cursor: pointer;
 }
+
+.button-reg {
+ width: 50%;
+    max-width: 500px;
+    min-width: 200px;
+    margin: 0 auto;
+    font-family: inherit;
+    font-size: 19px;
+    display: block;
+
+    padding: 15px 0;
+    background-color: #2da562;
+    border: 0;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}

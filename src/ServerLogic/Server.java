@@ -10,6 +10,7 @@ import server.ContentType;
 import server.ResponseCodes;
 import util.Decode;
 import util.JsonCreateReadWrite;
+import util.StringWrapper;
 import util.UserInteraction;
 import java.io.*;
 import java.util.Map;
@@ -36,20 +37,16 @@ public class Server extends BasicServer {
         DataModel dataModel = getDataModel();
         String raw = Server.getRequestBody(exchange);
         Map<String,String> parsed = Decode.parseUrlEncoded(raw, "&");
+
        if(UserInteraction.registration(dataModel,parsed.get("email"),parsed.get("user-password"))) {
-           try {
-               sendByteData(exchange,ResponseCodes.OK,ContentType.TEXT_HTML,getHtml("/register","Регистрация прошла успешно").getBytes( ));
-               dataModel.write();
-           }catch (IOException e) {
-               e.printStackTrace();
-           }
+
+           renderTemplate(exchange, "register.html", StringWrapper.getWrapper("Регистрация прошла успешно"));
+           dataModel.write();
+
        }
        else {
-           try {
-               sendByteData(exchange,ResponseCodes.OK,ContentType.TEXT_HTML,getHtml("/register","Регистрация не прошла </br> повторите попытку").getBytes( ));
-           }catch (IOException e) {
-               e.printStackTrace();
-           }
+
+           renderTemplate(exchange, "register.html", StringWrapper.getWrapper("Регистрация не прошла </br> повторите попытку"));
        }
     }
 
@@ -68,11 +65,7 @@ public class Server extends BasicServer {
             redirect303(exchange,"/profile");
         }
         else {
-            try {
-                sendByteData(exchange,ResponseCodes.OK,ContentType.TEXT_HTML,getHtml("/login","вход не прошел </br> повторите попытку").getBytes( ));
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
+            renderTemplate(exchange, "index.html", StringWrapper.getWrapper("Вход не прошел повторите попытку"));
         }
     }
 
@@ -130,46 +123,5 @@ public class Server extends BasicServer {
     private DataModel getDataModel() {
          DataModel dataModel = JsonCreateReadWrite.read("data.json");
         return dataModel;
-    }
-
-    private String getHtml(String actionPath,String result) {
-        String html = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Welcome</title>\n" +
-                "    <link rel=\"stylesheet\" href=\"css/forms.css\">\n" +
-                "</head>\n" +
-                "\n" +
-                "<body>\n" +
-                "<main>\n" +
-                "    <form action=\"/" + actionPath + "\" method=\"post\">\n" +
-                "        <fieldset>\n" +
-                "            <div class=\"legend\">\n" +
-                "                <p>"+ result + "</p>\n" +
-                "\n" +
-                "            </div>\n" +
-                "            <div class=\"form-element\">\n" +
-                "                <label for=\"user-email\">email</label>\n" +
-                "                <input type=\"email\" name=\"email\" id=\"user-email\" placeholder=\"your email\" required autofocus>\n" +
-                "            </div>\n" +
-                "            <div class=\"form-element\">\n" +
-                "                <label for=\"user-password\">password</label>\n" +
-                "                <input type=\"password\" name=\"user-password\" id=\"user-password\" placeholder=\"your password\" required>\n" +
-                "            </div>\n" +
-                "            <div class=\"hr-line\">\n" +
-                "                <span class=\"details\">one more step to go</span>\n" +
-                "            </div>\n" +
-                "            <div class=\"form-element\">\n" +
-                "                <button class=\"register-button\" type=\"submit\">Register!</button>\n" +
-                "            </div>\n" +
-                "        </fieldset>\n" +
-                "    </form>\n" +
-                "</main>\n" +
-                "</body>\n" +
-                "\n" +
-                "</html>";
-        return html;
     }
 }

@@ -55,7 +55,7 @@ public abstract class BasicServer {
     private void registerCommonHandlers() {
 
         server.createContext("/", this::handleIncomingServerRequests);
-        registerGet("/", exchange -> sendFile(exchange, makeFilePath("index.html"), ContentType.TEXT_HTML));
+        registerGet("/", exchange -> redirect303(exchange,"/login"));
         registerFileHandler(".css", ContentType.TEXT_CSS);
         registerFileHandler(".html", ContentType.TEXT_HTML);
         registerFileHandler(".jpg", ContentType.IMAGE_JPEG);
