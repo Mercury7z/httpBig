@@ -2,7 +2,6 @@ package ServerLogic;
 import model.Book;
 import model.Client;
 import util.JsonCreateReadWrite;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

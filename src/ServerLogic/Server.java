@@ -11,11 +11,8 @@ import server.ResponseCodes;
 import util.Decode;
 import util.JsonCreateReadWrite;
 import util.UserInteraction;
-
 import java.io.*;
 import java.util.Map;
-
-
 
 public class Server extends BasicServer {
     private final static Configuration freemarker = initFreeMarker();
@@ -27,13 +24,9 @@ public class Server extends BasicServer {
         registerGet("/profile", this::profileHandlerHandler);
         registerGet("/login", this::getLoginHandler);
         registerPost("/login", this::postLoginHandler);
-
         registerPost("/register", this::postRegisterHandler);
         registerGet("/register", this::getRegisterHandler);
-
     }
-
-
 
     private void getRegisterHandler(HttpExchange exchange) {
         renderTemplate(exchange, "register.html", getDataModel());

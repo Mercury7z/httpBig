@@ -17,7 +17,7 @@ public class Decode {
     public static Map<String,String> parseUrlEncoded(String raw, String delimiter) {
         String[] parts = raw.split(delimiter);
         Stream<Map.Entry<String,String>> stream = Arrays.stream(parts)
-                .map(Decode::decpde)
+                .map(Decode::decode)
                 .filter(Optional::isPresent)
                 .map(Optional::get);
         return stream.collect(Collectors.toMap(
@@ -26,7 +26,7 @@ public class Decode {
         ));
     }
 
-    private static Optional<Map.Entry<String,String>> decpde(String kv) {
+    private static Optional<Map.Entry<String,String>> decode(String kv) {
         if(!kv.contains("=")){
             return Optional.empty();
         }
