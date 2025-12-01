@@ -1,8 +1,11 @@
 package ServerLogic;
 
+import util.Decode;
+
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Objects;
 
 public class Cookie<V> {
@@ -20,6 +23,10 @@ public class Cookie<V> {
   
   public static <V> Cookie make(String name, V value) {
     return new Cookie<>(name, value);
+  }
+
+  public static Map<String,String> parse(String raw) {
+      return Decode.parseUrlEncoded(raw, ";");
   }
 
   public void setMaxAge(Integer maxAgeInSeconds) {
@@ -44,7 +51,7 @@ public class Cookie<V> {
         String stringValue = getValue().toString();
         String encodedValue = URLEncoder.encode(stringValue,utf8);
 
-        sb.append(String.format("%s=%s",encodedValue,encodedValue)) ;
+        sb.append(String.format("%s=%s",encodedName,encodedValue)) ;
         if(getMaxAge() != null){
             sb.append(String.format("; Max-Age=%s",getMaxAge()));
 

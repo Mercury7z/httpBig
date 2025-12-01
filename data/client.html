@@ -13,7 +13,6 @@
 <body>
 <main>
 
-    <div class="container">
         <div class="container">
             <h1>Информация о сотруднике</h1>
             <div class="table flex flex-col">
@@ -23,6 +22,9 @@
                     </div>
                     <div class="column">
                         Книги у сотрудника
+                    </div>
+                    <div class="column">
+                        Вернуть книгу
                     </div>
 
                 </div>
@@ -34,8 +36,13 @@
                         <span class="">Логин: ${book.key?split("/")[0]}</span>
                     </div>
                     <div class="column">
-                        <span class="no-wrap">Доступная книга: ${book.name}</span>
+                        <span class="no-wrap">  ${book.name}</span>
                     </div>
+
+                    <div class="column">
+                        <span class="no-wrap"><a href="#">Взять книгу</a></span>
+                    </div>
+
                 </div>
             </#list>
             <#else>
@@ -45,11 +52,51 @@
                 </div>
                 <div class="column">
                 </div>
+
             </div>
         </#if>
         </div>
 
+
+    <div class="table flex flex-col">
+        <div class="header flex">
+            <div class="column">
+                Доступные книги
+            </div>
+            <div class="column">
+                <span class="no-wrap"></span>
+            </div>
+            <div class="column">
+                Взять книгу
+            </div>
+
+        </div>
+        <#assign match = books?filter(b -> b.key == ("")) >
+        <#if match?has_content>
+        <#list match as book>
+        <div class="row flex success">
+            <div class="column">
+                <span class="">Доступная книга: ${book.name}</span>
+            </div>
+            <div class="column">
+                <span class="no-wrap"></span>
+            </div>
+            <div class="column">
+                <span class="no-wrap"><a href="#">Взять книгу</a></span>
+            </div>
+        </div>
+    </#list>
+    <#else>
+    <div class="row flex success">
+        <div class="column">
+            <span class="">Cейчас нет доступных книг}</span>
+        </div>
+        <div class="column">
+        </div>
     </div>
+</#if>
+</div>
+
     </div>
 
 </main>

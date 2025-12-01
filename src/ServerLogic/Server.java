@@ -5,7 +5,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import model.Client;
 import server.BasicServer;
 import server.ContentType;
 import server.ResponseCodes;
@@ -16,7 +15,6 @@ import util.UserInteraction;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 
 public class Server extends BasicServer {
@@ -26,7 +24,7 @@ public class Server extends BasicServer {
         super(host, port);
         registerGet("/books", this::booksHandler);
         registerGet("/bookInfo", this::bookInfoHandler);
-        registerGet("/profile", this::profileHandlerHandler);
+        registerGet("/profile", this::profileHandler);
         registerGet("/login", this::getLoginHandler);
         registerPost("/login", this::postLoginHandler);
         registerPost("/register", this::postRegisterHandler);
@@ -43,13 +41,10 @@ public class Server extends BasicServer {
         Map<String,String> parsed = Decode.parseUrlEncoded(raw, "&");
 
        if(UserInteraction.registration(dataModel,parsed.get("email"),parsed.get("user-password"))) {
-
            renderTemplate(exchange, "register.html", StringWrapper.getWrapper("Регистрация прошла успешно"));
            dataModel.write();
-
        }
        else {
-
            renderTemplate(exchange, "register.html", StringWrapper.getWrapper("Регистрация не прошла </br> повторите попытку"));
        }
     }
@@ -68,12 +63,14 @@ public class Server extends BasicServer {
             dataModel.write();
 
             Map<String, Object> data = new HashMap<>();
-            Cookie mail = Cookie.make("id" ,makeId(parsed.get("email") + parsed.get("user-password")));
 
-            mail.setHttpOnly(true);
-            mail.setMaxAge(10000);
-            exchange.getResponseHeaders().add("Set-Cookie", mail.toString());
+            Cookie session = Cookie.make("id" , makeId(parsed.get("email") + parsed.get("user-password")));
+
+            session.setHttpOnly(true);
+            session.setMaxAge(10000);
+            setCookie(exchange,session);
             redirect303(exchange,"/profile");
+
         }
         else {
             renderTemplate(exchange, "index.html", StringWrapper.getWrapper("Вход не прошел повторите попытку"));
@@ -111,9 +108,28 @@ public class Server extends BasicServer {
         }
     }
 
-    private void profileHandlerHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "client.html", getDataModel());
+    private void profileHandler(HttpExchange exchange) {
+        System.out.println(1);
+        Map<String,String> cookies = Cookie.parse(getCookie(exchange));
+        System.out.println(2);
+        int id;
+        if(cookies.containsKey("id")) {
+             id = Integer.parseInt(cookies.get("id"));
+        }
+        else {
+            id = -1;
+            redirect303(exchange,"/login");
+        }
+        System.out.println(3);
+        if(getDataModel().getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
+            renderTemplate(exchange, "client.html", getDataModel());
+        }
+        else {
+            redirect303(exchange,"/login");
+        }
     }
+
+
 
 
     private void bookInfoHandler(HttpExchange exchange) {
