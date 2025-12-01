@@ -37,8 +37,8 @@ public class Decode {
         }
 
         Charset utf8 = StandardCharsets.UTF_8;
-        String key = URLDecoder.decode(parts[0],utf8);
-        String value = URLDecoder.decode(parts[1],utf8);
+        String key = URLDecoder.decode(parts[0].strip() ,utf8);
+        String value = URLDecoder.decode(parts[1].strip() ,utf8);
         return Optional.of(Map.entry(key,value));
     }
 }

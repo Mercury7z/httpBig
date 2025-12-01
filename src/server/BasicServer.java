@@ -1,5 +1,6 @@
 package server;
 
+import ServerLogic.Cookie;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
@@ -152,6 +153,10 @@ public abstract class BasicServer {
     private void handleIncomingServerRequests(HttpExchange exchange) {
         var route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
         route.handle(exchange);
+    }
+
+    protected static void setCookie(HttpExchange exchange, Cookie cookie) {
+        exchange.getResponseHeaders().add("Set-Cookie",cookie.toString());
     }
 
     public final void start() {

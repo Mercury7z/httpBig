@@ -5,6 +5,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import model.Client;
 import server.BasicServer;
 import server.ContentType;
 import server.ResponseCodes;
@@ -13,7 +14,10 @@ import util.JsonCreateReadWrite;
 import util.StringWrapper;
 import util.UserInteraction;
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
 
 public class Server extends BasicServer {
     private final static Configuration freemarker = initFreeMarker();
@@ -59,15 +63,38 @@ public class Server extends BasicServer {
         String raw = Server.getRequestBody(exchange);
         Map<String,String> parsed = Decode.parseUrlEncoded(raw, "&");
         if(UserInteraction.login(dataModel,parsed.get("email"),parsed.get("user-password"))) {
-            ;
+
             dataModel.setClient(parsed.get("email") + parsed.get("user-password"));
             dataModel.write();
+
+            Map<String, Object> data = new HashMap<>();
+            Cookie mail = Cookie.make("id" ,makeId(parsed.get("email") + parsed.get("user-password")));
+
+            mail.setHttpOnly(true);
+            mail.setMaxAge(10000);
+            exchange.getResponseHeaders().add("Set-Cookie", mail.toString());
             redirect303(exchange,"/profile");
         }
         else {
             renderTemplate(exchange, "index.html", StringWrapper.getWrapper("Вход не прошел повторите попытку"));
         }
     }
+
+    private int makeId(String key) {
+        java.util.random.RandomGenerator r = new Random();
+        while (true) {
+            int newId = r.nextInt(0,1000000);
+            boolean isExist = getDataModel().getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == r.nextInt());
+            if(!isExist) {
+               DataModel dataModel = getDataModel();
+               dataModel.getClients().get(key).setId(newId);
+               dataModel.write();
+
+                return newId;
+            }
+        }
+    }
+
 
     private static Configuration initFreeMarker() {
         try {

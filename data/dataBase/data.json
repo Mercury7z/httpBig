@@ -23,48 +23,59 @@
   ],
   "client": {
     "name": "123@123",
-    "password": "123"
+    "password": "123",
+    "id": 0
   },
   "clients": {
     "asd@asdasd": {
       "name": "asd@asd",
-      "password": "asd"
+      "password": "asd",
+      "id": 0
     },
     "123@123123": {
       "name": "123@123",
-      "password": "123"
+      "password": "123",
+      "id": 681
     },
     "123@12312": {
       "name": "123@123",
-      "password": "12"
+      "password": "12",
+      "id": 0
     },
     "123@123123132123231132": {
       "name": "123@123",
-      "password": "123132123231132"
+      "password": "123132123231132",
+      "id": 0
     },
     "123@123asdsadsdaasddas": {
       "name": "123@123",
-      "password": "asdsadsdaasddas"
+      "password": "asdsadsdaasddas",
+      "id": 0
     },
     "1@11": {
       "name": "1@1",
-      "password": "1"
+      "password": "1",
+      "id": 0
     },
     "asd@asdфыв": {
       "name": "asd@asd",
-      "password": "фыв"
+      "password": "фыв",
+      "id": 0
     },
     "123@112323123123123": {
       "name": "123@112323123123",
-      "password": "123"
+      "password": "123",
+      "id": 0
     },
     "123@123123123312": {
       "name": "123@123",
-      "password": "123123312"
+      "password": "123123312",
+      "id": 0
     },
     "asdddd@asdasd": {
       "name": "asdddd@asd",
-      "password": "asd"
+      "password": "asd",
+      "id": 0
     }
   }
 }
