@@ -59,7 +59,6 @@ public class Server extends BasicServer {
         }
 
         if(dataModel.getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
-            System.out.println(3);
            Client client = dataModel.getClients().entrySet()
                    .stream()
                    .filter(c -> c.getValue().getId() == id)
@@ -71,15 +70,12 @@ public class Server extends BasicServer {
                    .filter(c -> c.getKey()
                            .equalsIgnoreCase(client.getName() + "/" + client.getPassword())).toArray(Book[]::new);
            if (books.length >= 1){
-               System.out.println(4);
                redirect303(exchange,"/profile");
            }
            else {
-               System.out.println(5);
                if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
                    String query = exchange.getRequestURI().getQuery();
                    Map<String, String> params = queryToMap(query);
-                   System.out.println(6);
                    String bookName = params.get("bookName");
                    dataModel.getBooks()
                            .stream()
@@ -87,7 +83,6 @@ public class Server extends BasicServer {
                            .forEach(c -> c.setKey(client.getName() + "/" + client.getPassword()));
                    dataModel.write();
                     redirect303(exchange,"/profile");
-
                }
            }
         }
@@ -124,7 +119,6 @@ public class Server extends BasicServer {
         }
 
         if(dataModel.getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
-            System.out.println(3);
             Client client = dataModel.getClients().entrySet()
                     .stream()
                     .filter(c -> c.getValue().getId() == id)
@@ -139,7 +133,6 @@ public class Server extends BasicServer {
                 if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
                     String query = exchange.getRequestURI().getQuery();
                     Map<String, String> params = queryToMap(query);
-                    System.out.println(6);
                     String bookName = params.get("bookName");
                     dataModel.getBooks()
                             .stream()
@@ -184,7 +177,6 @@ public class Server extends BasicServer {
         String raw = Server.getRequestBody(exchange);
         Map<String,String> parsed = Decode.parseUrlEncoded(raw, "&");
         if(UserInteraction.login(dataModel,parsed.get("email"),parsed.get("user-password"))) {
-
             dataModel.setClient(parsed.get("email") + parsed.get("user-password"));
             dataModel.write();
 
@@ -194,7 +186,6 @@ public class Server extends BasicServer {
             session.setMaxAge(360);
             setCookie(exchange,session);
             redirect303(exchange,"/profile");
-
         }
         else {
             renderTemplate(exchange, "index.html", StringWrapper.getWrapper("Вход не прошел повторите попытку"));
@@ -210,7 +201,6 @@ public class Server extends BasicServer {
                DataModel dataModel = getDataModel();
                dataModel.getClients().get(key).setId(newId);
                dataModel.write();
-
                 return newId;
             }
         }
