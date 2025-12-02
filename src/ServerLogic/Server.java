@@ -15,11 +15,8 @@ import util.JsonCreateReadWrite;
 import util.StringWrapper;
 import util.UserInteraction;
 import java.io.*;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class Server extends BasicServer {
     private final static Configuration freemarker = initFreeMarker();
@@ -35,6 +32,17 @@ public class Server extends BasicServer {
         registerGet("/register", this::getRegisterHandler);
         registerGet("/getBook/", this::getBookHandler);
         registerGet("/setBook/", this::setBookHandler);
+        registerGet("/exit", this::exitHandler);
+    }
+
+    private void exitHandler(HttpExchange exchange) {
+        String incomeCookie = getCookie(exchange);
+        Map<String,String> cookies = Cookie.parse(incomeCookie);
+        Cookie session = Cookie.make("id" , cookies.get("id"));
+        session.setMaxAge(0);
+        setCookie(exchange,session);
+        redirect303(exchange,"/login");
+
     }
 
     private void getBookHandler(HttpExchange exchange) {
@@ -103,7 +111,50 @@ public class Server extends BasicServer {
 
 
     private void setBookHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "register.html", getDataModel());
+        String incomeCookie = getCookie(exchange);
+        Map<String,String> cookies = Cookie.parse(incomeCookie);
+        int id;
+        DataModel dataModel = getDataModel();
+        if(cookies.containsKey("id")) {
+            id = Integer.parseInt(cookies.get("id"));
+        }
+        else {
+            id = -1; System.out.println(2);
+            redirect303(exchange,"/login");
+        }
+
+        if(dataModel.getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
+            System.out.println(3);
+            Client client = dataModel.getClients().entrySet()
+                    .stream()
+                    .filter(c -> c.getValue().getId() == id)
+                    .map(Map.Entry::getValue)
+                    .findFirst()
+                    .orElse(null);
+            List<Book> books = dataModel.getBooks()
+                    .stream()
+                    .filter(c -> c.getKey()
+                            .equalsIgnoreCase(client.getName() + "/" + client.getPassword())).toList();
+
+                if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+                    String query = exchange.getRequestURI().getQuery();
+                    Map<String, String> params = queryToMap(query);
+                    System.out.println(6);
+                    String bookName = params.get("bookName");
+                    dataModel.getBooks()
+                            .stream()
+                            .filter(c -> c.getKey().contains(client.getName() + "/" + client.getPassword()))
+                            .filter(c -> c.getName().equalsIgnoreCase(bookName))
+                            .forEach(c -> c.setKey(""));
+                    dataModel.write();
+                    redirect303(exchange,"/profile");
+
+            }
+        }
+        else {
+            redirect303(exchange,"/login");
+        }
+
     }
 
     private void getRegisterHandler(HttpExchange exchange) {
@@ -137,12 +188,10 @@ public class Server extends BasicServer {
             dataModel.setClient(parsed.get("email") + parsed.get("user-password"));
             dataModel.write();
 
-            Map<String, Object> data = new HashMap<>();
-
             Cookie session = Cookie.make("id" , makeId(parsed.get("email") + parsed.get("user-password")));
 
             session.setHttpOnly(true);
-            session.setMaxAge(10000);
+            session.setMaxAge(360);
             setCookie(exchange,session);
             redirect303(exchange,"/profile");
 

@@ -15,6 +15,7 @@
 
         <div class="container">
             <h1>Информация о сотруднике</h1>
+
             <div class="table flex flex-col">
                 <div class="header flex">
                     <div class="column">
@@ -26,6 +27,11 @@
                     <div class="column">
                         Вернуть книгу
                     </div>
+                    <div class="column">
+                        <a href="/exit">Выйти из аккаунта</a>
+                    </div>
+
+
 
                 </div>
                 <#assign match = books?filter(b -> b.key == ((client.name)) + "/" + ((client.password))) >
@@ -38,9 +44,8 @@
                     <div class="column">
                         <span class="no-wrap">  ${book.name}</span>
                     </div>
-
                     <div class="column">
-                        <span class="no-wrap">a href="/take?bookName=${book.name}">Взять книгу</a></span>
+                        <span class="no-wrap"><a href="/setBook/?bookName=${book.name}">положить книгу</a></span>
                     </div>
 
                 </div>
@@ -76,10 +81,10 @@
         <#list match as book>
         <div class="row flex success">
             <div class="column">
-                <span class="">Доступная книга: ${book.name}</span>
+                <span class="">Доступная книга: </span>
             </div>
             <div class="column">
-                <span class="no-wrap"></span>
+                <span class="no-wrap">${book.name}</span>
             </div>
             <div class="column">
                 <span class="no-wrap"><a href="/getBook/?bookName=${book.name}">Взять книгу</a></span>
@@ -95,6 +100,7 @@
         </div>
     </div>
 </#if>
+
 </div>
 
     </div>
