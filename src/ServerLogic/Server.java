@@ -69,7 +69,7 @@ public class Server extends BasicServer {
                    .stream()
                    .filter(c -> c.getKey()
                            .equalsIgnoreCase(client.getName() + "/" + client.getPassword())).toArray(Book[]::new);
-           if (books.length >= 1){
+           if (books.length >= 2){
                redirect303(exchange,"/profile");
            }
            else {
