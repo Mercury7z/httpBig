@@ -54,10 +54,9 @@ public class Server extends BasicServer {
             id = Integer.parseInt(cookies.get("id"));
         }
         else {
-            id = -1; System.out.println(2);
+            id = -1;
             redirect303(exchange,"/login");
         }
-
         if(dataModel.getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
            Client client = dataModel.getClients().entrySet()
                    .stream()
@@ -69,7 +68,7 @@ public class Server extends BasicServer {
                    .stream()
                    .filter(c -> c.getKey()
                            .equalsIgnoreCase(client.getName() + "/" + client.getPassword())).toArray(Book[]::new);
-           if (books.length >= 1){
+           if (books.length >= 2){
                redirect303(exchange,"/profile");
            }
            else {
@@ -89,11 +88,7 @@ public class Server extends BasicServer {
         else {
             redirect303(exchange,"/login");
         }
-
     }
-
-
-
 
     private Map<String, String> queryToMap(String query) {
         Map<String, String> result = new HashMap<>();
@@ -114,7 +109,7 @@ public class Server extends BasicServer {
             id = Integer.parseInt(cookies.get("id"));
         }
         else {
-            id = -1; System.out.println(2);
+            id = -1;
             redirect303(exchange,"/login");
         }
 
