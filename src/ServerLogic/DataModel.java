@@ -10,10 +10,19 @@ public class DataModel {
     private Book book;
     private List<Book> books = new ArrayList<>();
     private Client client;
+    private String msg;
     private HashMap<String,Client> clients = new HashMap<>();
 
     public DataModel() {
 
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 
     public HashMap<String, Client> getClients() {

@@ -5,6 +5,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import model.Book;
+import model.Client;
 import server.BasicServer;
 import server.ContentType;
 import server.ResponseCodes;
@@ -13,9 +15,11 @@ import util.JsonCreateReadWrite;
 import util.StringWrapper;
 import util.UserInteraction;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Server extends BasicServer {
     private final static Configuration freemarker = initFreeMarker();
@@ -29,6 +33,77 @@ public class Server extends BasicServer {
         registerPost("/login", this::postLoginHandler);
         registerPost("/register", this::postRegisterHandler);
         registerGet("/register", this::getRegisterHandler);
+        registerGet("/getBook/", this::getBookHandler);
+        registerGet("/setBook/", this::setBookHandler);
+    }
+
+    private void getBookHandler(HttpExchange exchange) {
+        String incomeCookie = getCookie(exchange);
+        Map<String,String> cookies = Cookie.parse(incomeCookie);
+        int id;
+        DataModel dataModel = getDataModel();
+        if(cookies.containsKey("id")) {
+            id = Integer.parseInt(cookies.get("id"));
+        }
+        else {
+            id = -1; System.out.println(2);
+            redirect303(exchange,"/login");
+        }
+
+        if(dataModel.getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
+            System.out.println(3);
+           Client client = dataModel.getClients().entrySet()
+                   .stream()
+                   .filter(c -> c.getValue().getId() == id)
+                   .map(Map.Entry::getValue)
+                   .findFirst()
+                   .orElse(null);
+           Book[] books = dataModel.getBooks()
+                   .stream()
+                   .filter(c -> c.getKey()
+                           .equalsIgnoreCase(client.getName() + "/" + client.getPassword())).toArray(Book[]::new);
+           if (books.length >= 1){
+               System.out.println(4);
+               redirect303(exchange,"/profile");
+           }
+           else {
+               System.out.println(5);
+               if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+                   String query = exchange.getRequestURI().getQuery();
+                   Map<String, String> params = queryToMap(query);
+                   System.out.println(6);
+                   String bookName = params.get("bookName");
+                   dataModel.getBooks()
+                           .stream()
+                           .filter(c -> c.getName().equalsIgnoreCase(bookName))
+                           .forEach(c -> c.setKey(client.getName() + "/" + client.getPassword()));
+                   dataModel.write();
+                    redirect303(exchange,"/profile");
+
+               }
+           }
+        }
+        else {
+            redirect303(exchange,"/login");
+        }
+
+    }
+
+
+
+
+    private Map<String, String> queryToMap(String query) {
+        Map<String, String> result = new HashMap<>();
+        for (String param : query.split("&")) {
+            String[] pair = param.split("=");
+            result.put(pair[0], pair[1]);
+        }
+        return result;
+    }
+
+
+    private void setBookHandler(HttpExchange exchange) {
+        renderTemplate(exchange, "register.html", getDataModel());
     }
 
     private void getRegisterHandler(HttpExchange exchange) {
@@ -109,9 +184,7 @@ public class Server extends BasicServer {
     }
 
     private void profileHandler(HttpExchange exchange) {
-        System.out.println(1);
         Map<String,String> cookies = Cookie.parse(getCookie(exchange));
-        System.out.println(2);
         int id;
         if(cookies.containsKey("id")) {
              id = Integer.parseInt(cookies.get("id"));
@@ -120,7 +193,7 @@ public class Server extends BasicServer {
             id = -1;
             redirect303(exchange,"/login");
         }
-        System.out.println(3);
+
         if(getDataModel().getClients().entrySet().stream().anyMatch(c -> c.getValue().getId() == id)){
             renderTemplate(exchange, "client.html", getDataModel());
         }
@@ -128,9 +201,6 @@ public class Server extends BasicServer {
             redirect303(exchange,"/login");
         }
     }
-
-
-
 
     private void bookInfoHandler(HttpExchange exchange) {
         renderTemplate(exchange, "bookInfo.html", getDataModel());
