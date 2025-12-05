@@ -242,7 +242,11 @@ public class Server extends BasicServer {
     }
 
     private void bookInfoHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "bookInfo.html", getDataModel());
+        String query = exchange.getRequestURI().getQuery();
+        Map<String, String> params = queryToMap(query);
+        Map<String,Object> data = new HashMap<>();
+        data.put("params",params);
+        renderTemplate(exchange, "bookInfo.html", data);
     }
 
     private void booksHandler(HttpExchange exchange) {

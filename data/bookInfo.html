@@ -15,12 +15,14 @@
 
     <div class="container">
         <h1>Информация о книге</h1>
+        <#if params??>
         <div class="bookInfo">
-            <h1> ${book.name} ${book.author} </h1>
+            <h1> ${params.name!""} ${params.author!""} </h1>
         </div>
-        <div class="bookInfo ">
-           <h1>Тут может храниться информация</h1>
+        <div class="bookInfo bookimg">
+            <img src=${params.path!""}>
         </div>
+        </#if>
     </div>
 
 </main>

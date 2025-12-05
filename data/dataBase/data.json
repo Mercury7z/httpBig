@@ -2,45 +2,51 @@
   "book": {
     "name": "LOTR1",
     "author": "Tolkin",
-    "key": ""
+    "key": "",
+    "path": "img/1.jpg"
   },
   "books": [
     {
       "name": "LOTR1",
       "author": "Tolkin",
-      "key": "asd@asd/asd"
+      "key": "asd@asd/asd",
+      "path": "img/1.jpg"
     },
     {
       "name": "LOTR2",
       "author": "Tolkin",
-      "key": "123@123/123"
+      "key": "123@123/123",
+      "path": "img/1.jpg"
     },
     {
       "name": "LOTR3",
       "author": "Tolkin",
-      "key": "123@123/123"
+      "key": "123@123/123",
+      "path": "img/1.jpg"
     },
     {
       "name": "LOTR4",
       "author": "Tolkin",
-      "key": ""
+      "key": "",
+      "path": "img/1.jpg"
     },
     {
       "name": "LOTR5",
       "author": "Tolkin",
-      "key": "asd@asd/asd"
+      "key": "asd@asd/asd",
+      "path": "img/1.jpg"
     }
   ],
   "client": {
     "name": "asd@asd",
     "password": "asd",
-    "id": 55973
+    "id": 394090
   },
   "clients": {
     "asd@asdasd": {
       "name": "asd@asd",
       "password": "asd",
-      "id": 394090
+      "id": 15253
     },
     "123@123123": {
       "name": "123@123",

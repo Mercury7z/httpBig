@@ -18,7 +18,13 @@ div p:last-child {
   padding-bottom: 20px;
 }
 
+img {
+ max-width: 200px;
+ max-height: 200px;
 
+ padding: 0 36%;
+
+}
 
 .container {
  width: 800px;
