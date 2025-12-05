@@ -242,15 +242,31 @@ public class Server extends BasicServer {
     }
 
     private void bookInfoHandler(HttpExchange exchange) {
-        String query = exchange.getRequestURI().getQuery();
-        Map<String, String> params = queryToMap(query);
-        Map<String,Object> data = new HashMap<>();
-        data.put("params",params);
-        renderTemplate(exchange, "bookInfo.html", data);
+        String incomeCookie = getCookie(exchange);
+        Map<String,String> cookies = Cookie.parse(incomeCookie);
+        if(cookies.containsKey("id")) {
+            String query = exchange.getRequestURI().getQuery();
+            Map<String, String> params = queryToMap(query);
+            Map<String,Object> data = new HashMap<>();
+            data.put("params",params);
+            renderTemplate(exchange, "bookInfo.html", data);
+        }
+        else {
+            redirect303(exchange,"/login");
+        }
+
     }
 
     private void booksHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "books.html", getDataModel());
+        String incomeCookie = getCookie(exchange);
+        Map<String,String> cookies = Cookie.parse(incomeCookie);
+        if(cookies.containsKey("id")) {
+            renderTemplate(exchange, "books.html", getDataModel());
+        }
+        else {
+            redirect303(exchange,"/login");
+        }
+
     }
 
 
