@@ -8,7 +8,7 @@
     {
       "name": "LOTR1",
       "author": "Tolkin",
-      "key": ""
+      "key": "asd@asd/asd"
     },
     {
       "name": "LOTR2",
@@ -28,19 +28,19 @@
     {
       "name": "LOTR5",
       "author": "Tolkin",
-      "key": ""
+      "key": "asd@asd/asd"
     }
   ],
   "client": {
     "name": "asd@asd",
     "password": "asd",
-    "id": 685835
+    "id": 55973
   },
   "clients": {
     "asd@asdasd": {
       "name": "asd@asd",
       "password": "asd",
-      "id": 641692
+      "id": 394090
     },
     "123@123123": {
       "name": "123@123",

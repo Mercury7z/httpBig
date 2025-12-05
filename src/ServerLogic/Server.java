@@ -54,7 +54,7 @@ public class Server extends BasicServer {
             id = Integer.parseInt(cookies.get("id"));
         }
         else {
-            id = -1; System.out.println(2);
+            id = -1;
             redirect303(exchange,"/login");
         }
 

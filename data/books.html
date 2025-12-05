@@ -35,9 +35,8 @@
                         ${book?counter}
                     </div>
                     <div class="column">
-                        <a href="/bookInfo">
-                            ${book.name!"-- не указано --"}
-                        </a>
+                        <span class="no-wrap"><a href="/bookInfo/?name=${book.name}&author=${book.name}&path=${book.name}">${book.name!"-- не указано --"}</a></span>
+
                     </div>
                     <div class="column">
                         ${book.author!"-- не указано --"}
